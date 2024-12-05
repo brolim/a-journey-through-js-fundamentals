@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>HTML + JS</title>
+
+    <style>
+      h1 {
+        color: orange;
+      }
+
+      .square {
+        background-color: aquamarine;
+        display: inline-block;
+        padding: 1rem;
+      }
+
+      .circle {
+        background-color: rgb(48, 148, 115);
+        display: inline-block;
+        padding: 1rem;
+        border-radius: 50%;
+      }
+
+      .regular-text {
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+
+  <body class="regular-text">
+    <h1>JS Sample</h1>
+    <b>
+      hello world
+    </b>
+
+    <h1>JS Sample</h1>
+
+    <div id="root">
+    </div>
+
+    <script>
+      const squareAndCircleComponent = (index) => {
+        return `
+          <div>
+            <div class="square" onclick="toggleElementsVisibility(${ index });" style="display: none;">
+            </div>
+            
+            <div class="circle" onclick="toggleElementsVisibility(${ index });">
+            </div>
+          </div>
+        `
+      }
+
+      const root = document.getElementById("root");
+      root.innerHTML = squareAndCircleComponent(0);
+      root.innerHTML += squareAndCircleComponent(1);
+      root.innerHTML += squareAndCircleComponent(2);
+      root.innerHTML += squareAndCircleComponent(3);
+
+
+      let squareIsVisible = [false, false, false];
+
+
+      const toggleElementsVisibility = function (index) {
+        const square = document.getElementsByClassName("square")[index];
+        const circle = document.getElementsByClassName("circle")[index];
+
+        if (!square)
+          return;
+
+        if (squareIsVisible[index]) {
+          circle.style.display = "inline-block";
+          square.style.display = "none";
+          squareIsVisible[index] = false;
+        } else {
+          square.style.display = "inline-block";
+          circle.style.display = "none";
+          squareIsVisible[index] = true;
+        }
+      }
+
+    </script>
+  </body>
+</html>
