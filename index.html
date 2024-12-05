@@ -11,7 +11,7 @@
 
       .square {
         background-color: aquamarine;
-        display: inline-block;
+        display: none;
         padding: 1rem;
       }
 
@@ -40,28 +40,63 @@
     </div>
 
     <script>
+      // state management
+      let squareIsVisible = [
+        { visible: false, color: "red" },
+        { visible: false, color: "green" },
+        { visible: false, color: "yellow" },
+        { visible: false, color: "blue" },
+      ];
+
+
+      // rendering
+      // DOM - the object that the browser uses to build the page and show to user
+      // virtual DOM - 
+
+      let actualDOM = ""
+      let virtualDOM = ""
+
       const squareAndCircleComponent = (index) => {
+        const squareState = squareIsVisible[index];
         return `
           <div>
-            <div class="square" onclick="toggleElementsVisibility(${ index });" style="display: none;">
+            <div
+              class="square"
+              onclick="toggleElementsVisibility(${ index });"
+              style="background-color: ${ squareState.color }"
+            >
             </div>
-            
-            <div class="circle" onclick="toggleElementsVisibility(${ index });">
+              
+            <div
+              class="circle"
+              onclick="toggleElementsVisibility(${ index });"
+              style="background-color: ${ squareState.color }"
+            >
             </div>
           </div>
         `
       }
 
       const root = document.getElementById("root");
-      root.innerHTML = squareAndCircleComponent(0);
-      root.innerHTML += squareAndCircleComponent(1);
-      root.innerHTML += squareAndCircleComponent(2);
-      root.innerHTML += squareAndCircleComponent(3);
+      const changeTheDOM = function(content) {
+        virtualDOM = content;
 
+        if (virtualDOM === actualDOM)
+          return;
 
-      let squareIsVisible = [false, false, false];
+        actualDOM = virtualDOM;
+        root.innerHTML = virtualDOM;
+      }
 
+      let content = squareAndCircleComponent(0);
+      content += squareAndCircleComponent(1);
+      content += squareAndCircleComponent(2);
+      content += squareAndCircleComponent(3);
+      changeTheDOM(content);
+      changeTheDOM(content);
+      changeTheDOM(content);
 
+      // business logic
       const toggleElementsVisibility = function (index) {
         const square = document.getElementsByClassName("square")[index];
         const circle = document.getElementsByClassName("circle")[index];
@@ -69,14 +104,15 @@
         if (!square)
           return;
 
-        if (squareIsVisible[index]) {
+        const squareState = squareIsVisible[index];
+        if (squareState.visible) {
           circle.style.display = "inline-block";
           square.style.display = "none";
-          squareIsVisible[index] = false;
+          squareState.visible = false;
         } else {
           square.style.display = "inline-block";
           circle.style.display = "none";
-          squareIsVisible[index] = true;
+          squareState.visible = true;
         }
       }
 
